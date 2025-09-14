@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Power Efficiency - Home</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <img class="logo" onclick="loadPage('home'); event.preventDefault();" src="PowerIcon.png" />
+    <nav>
+      <ul class="nav-menu">
+        <li><a href="#" id="home-link" onclick="loadPage('home'); event.preventDefault();" class="nav-link">Home</a></li>
+        <li><a href="#" id="tv-link" onclick="loadPage('televisions'); event.preventDefault();" class="nav-link">Televisions</a></li>
+        <li><a href="#" id="about-link" onclick="loadPage('about-us'); event.preventDefault();" class="nav-link">About Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="content">
+    <h1>Welcome to Power Efficiency</h1>
+    <p>This website provides insights into energy consumption of  
+      appliances in the Australian market. Stay tuned for detailed analysis!</p>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Nguyen Thuan Khang. Built with assistance from GenAI.</p>
+  </footer>
+
+  <script>
+    function loadPage(page) {
+      console.log('Loading page:', page); // Debug 
+
+      const content = document.getElementById('content');
+      const links = document.querySelectorAll('.nav-link');
+
+      // update page content
+      if (page === 'home') {
+        content.innerHTML = '<h1>Welcome to Power Efficiency</h1><p>This website provides insights into energy consumption of appliances in the Australian market. Stay tuned for detailed analysis!</p>';
+      } else if (page === 'televisions') {
+        content.innerHTML = '<h1>Televisions</h1><p>Explore energy ratings for TVs in Australia. Larger screens (e.g., 75-inch) can consume up to 751 kWh/year, while smaller ones (e.g., 16-inch) use around 76 kWh/year.</p>';
+      } else if (page === 'about-us') {
+        content.innerHTML = '<h1>About Us</h1><p>We are dedicated to promoting energy efficiency for appliances across Australia. Learn more about our mission!</p>';
+      }
+
+      //remove active class
+      links.forEach(link => {
+        link.classList.remove('active');
+        link.style.backgroundColor = ''; // 
+        console.log('Reset active and color for:', link.id); // Debug
+      });
+
+     
+      let activeLink;
+      if (page === 'home') {
+        activeLink = document.getElementById('home-link');
+      } else if (page === 'televisions') {
+        activeLink = document.getElementById('tv-link');
+      } else if (page === 'about-us') {
+        activeLink = document.getElementById('about-link');
+      }
+
+      if (activeLink) {
+        activeLink.classList.add('active');
+        console.log('Added active to:', activeLink.id);
+      } else {
+        console.error('Error: Active link not found for page:', page);
+      }
+    }
+
+    // Feedback hover
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+      link.addEventListener('mouseenter', () => {
+        if (!link.classList.contains('active')) {
+          link.style.backgroundColor = '#e0e0e0'; // Hover color
+        }
+      });
+      link.addEventListener('mouseleave', () => {
+        if (!link.classList.contains('active')) {
+          link.style.backgroundColor = ''; // Reset 
+        }
+      });
+    });
+
+  
+    loadPage('home');
+  </script>
