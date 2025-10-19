@@ -5,7 +5,6 @@
     <title>Power Efficiency</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="d3_script.js"></script>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -18,10 +17,17 @@
         margin-right: 10px;
         padding: 5px 10px;
       }
+      .active {
+        background-color: #4caf50;
+        color: white;
+      }
       #content {
         border: 1px solid #ccc;
         padding: 20px;
         min-height: 200px;
+      }
+      .responsive-svg-container {
+        margin-top: 20px;
       }
     </style>
   </head>
@@ -31,6 +37,8 @@
         class="logo"
         onclick="loadPage('home'); event.preventDefault();"
         src="PowerIcon.png"
+        alt="Logo"
+        style="width: 80px; cursor: pointer;"
       />
       <nav>
         <button id="home-link" onclick="loadPage('home')" class="nav-link">
@@ -42,9 +50,20 @@
         <button id="about-link" onclick="loadPage('about-us')" class="nav-link">
           About Us
         </button>
+        <button id="chart-link" onclick="loadPage('chart')" class="nav-link">
+          Chart
+        </button>
       </nav>
     </header>
+
     <main id="content"></main>
+
+ 
+    <script src="js/d3_script.js"></script>
+    <script src="js/chart_scatter.js"></script>
+    <script src="js/chart_donut.js"></script>
+    <script src="js/chart_bar.js"></script>
+    <script src="js/chart_line.js"></script>
 
     <script>
       function loadPage(page) {
@@ -52,44 +71,48 @@
         const links = document.querySelectorAll(".nav-link");
 
         if (page === "home") {
-          content.innerHTML = `<div id="contents"><h1>Welcome to Power Efficiency</h1> <p>This website provides insights into energy consumption of appliances in the Australian market. Stay tuned for detailed analysis!</p></div>`;
+          content.innerHTML = `
+            <div id="contents">
+              <h1>Welcome to Power Efficiency</h1>
+              <p>This website provides insights into energy consumption of appliances in the Australian market. Stay tuned for detailed analysis!</p>
+            </div>`;
         } else if (page === "televisions") {
           content.innerHTML = `
-          <h1>Televisions</h1>
-          <p>Explore energy ratings for TVs in Australia. Larger screens (e.g., 75-inch) can consume up to 751 kWh/year, while smaller ones (e.g., 16-inch) use around 76 kWh/year.</p>
-          <div id="chart-container" class="responsive-svg-container">
-            <svg><svg>
-          </div>
-        `;
+            <h1>Televisions</h1>
+            <p>Explore energy ratings for TVs in Australia. Larger screens (e.g., 75-inch) can consume up to 751 kWh/year, while smaller ones (e.g., 16-inch) use around 76 kWh/year.</p>
+            <div id="chart-container" class="responsive-svg-container"></div>
+          `;
         } else if (page === "about-us") {
-          content.innerHTML = `<h1>About Us</h1><p>We are dedicated to promoting energy efficiency for appliances across Australia. Learn more about our mission!</p>`;
-        }
-        //remove active class
-        links.forEach((link) => {
-          link.classList.remove("active");
-          link.style.backgroundColor = ""; //
-          console.log("Reset active and color for:", link.id); // Debug
-        });
-        let activeLink;
-        if (page === "home") {
-          activeLink = document.getElementById("home-link");
-        } else if (page === "televisions") {
-          activeLink = document.getElementById("tv-link");
-        } else if (page === "about-us") {
-          activeLink = document.getElementById("about-link");
+          content.innerHTML = `
+            <h1>About Us</h1>
+            <p>We are dedicated to promoting energy efficiency for appliances across Australia. Learn more about our mission!</p>
+          `;
+        } else if (page === "chart") {
+          content.innerHTML = `
+            <h1>Charts</h1>
+            <div id="scatterChart" class="responsive-svg-container"></div>
+            <div id="donutChart" class="responsive-svg-container"></div>
+            <div id="barChart" class="responsive-svg-container"></div>
+            <div id="lineChart" class="responsive-svg-container"></div>
+          `;
         }
 
-        if (activeLink) {
-          activeLink.classList.add("active");
-          console.log("Added active to:", activeLink.id);
-        } else {
-          console.error("Error: Active link not found for page:", page);
-        }
+        // Reset active
+        links.forEach((link) => link.classList.remove("active"));
+        const activeLink = document.getElementById(`${page}-link`);
+        if (activeLink) activeLink.classList.add("active");
+
+        // 
+        applyD3Style(page);
         applyD3Styles(page);
+        applyD3Styles1(page);
+        applyD3Styles2(page);
+        applyD3Styles3(page);
+
       }
 
       // Load home mặc định
-      loadPage("");
+      loadPage("home");
     </script>
   </body>
 </html>
